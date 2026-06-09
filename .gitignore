@@ -1,0 +1,9 @@
+# model weights
+checkpoints/
+results/
+visualization/
+logs/
+
+# cache
+__pycache__/
+*.pyc
