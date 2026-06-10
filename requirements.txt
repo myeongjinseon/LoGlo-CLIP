@@ -1,0 +1,12 @@
+torch
+torchvision
+transformers==4.30.2
+datasets==2.14.7
+pyarrow<15
+numpy<2
+pandas
+tqdm
+pillow
+matplotlib
+scikit-learn
+pyyaml
