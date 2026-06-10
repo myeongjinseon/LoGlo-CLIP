@@ -1,15 +1,22 @@
-#data
-data/
-
-# model weights
-checkpoints/
-results/
-visualization/
-logs/
-
-# cache
 __pycache__/
 *.pyc
-
-#venv
+.ipynb_checkpoints/
 .venv/
+venv/
+env/
+data/
+datasets/
+*.log
+logs/*.log
+checkpoints/**/*.pt
+checkpoints/**/*.pth
+results/**/*.csv
+visualization/**/*.png
+visualization/**/*.jpg
+.DS_Store
+wandb/
+
+!checkpoints/.gitkeep
+!results/.gitkeep
+!visualization/.gitkeep
+!logs/.gitkeep
