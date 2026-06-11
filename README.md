@@ -1,8 +1,10 @@
 # LoGlo-CLIP: Local-to-Global Layer Fusion for CLIP Image-Text Retrieval
 
-## Student name and Youtube Link
-Myeongjin Seon 22200376
-https://youtu.be/J05XfoPAiKg
+## Student Name, Project Report, and YouTube Link
+
+- **Student:** Myeongjin Seon (22200376)
+- **Project Report:** [LoGlo_CLIP.pdf](./LoGlo_CLIP.pdf)
+- **YouTube:** https://youtu.be/J05XfoPAiKg
 
 ## Overview
 
