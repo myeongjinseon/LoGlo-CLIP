@@ -1,5 +1,9 @@
 # LoGlo-CLIP: Local-to-Global Layer Fusion for CLIP Image-Text Retrieval
 
+## Student name and Youtube Link
+Myeongjin Seon 22200376
+https://youtu.be/J05XfoPAiKg
+
 ## Overview
 
 LoGlo-CLIP is a lightweight visual encoder adapter for CLIP ViT-B/32. It
