@@ -1,5 +1,6 @@
 """Flickr30k loading, preprocessing, tokenization, and data loaders."""
 
+import csv
 from pathlib import Path
 
 import torch
@@ -8,6 +9,8 @@ from torch.utils.data import DataLoader, Dataset
 
 
 DEFAULT_DATASET = "nlphuji/flickr30k"
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_LOCAL_ANNOTATIONS = PROJECT_ROOT / "data" / "flickr30k" / "annotations.csv"
 SPLIT_ALIASES = {
     "train": ("train",),
     "val": ("val", "validation"),
@@ -20,7 +23,69 @@ def normalize_split(split):
     return "val" if split == "validation" else split
 
 
+class LocalFlickrSplit(Dataset):
+    """Minimal HuggingFace-like split backed by prepared local images."""
+
+    column_names = ("image", "caption", "image_id", "split")
+
+    def __init__(self, rows):
+        self.rows = list(rows)
+
+    def __len__(self):
+        return len(self.rows)
+
+    def __getitem__(self, index):
+        if isinstance(index, str):
+            if index not in self.column_names:
+                raise KeyError(index)
+            if index == "split":
+                return [normalize_split(row["split"]) for row in self.rows]
+            if index == "caption":
+                return [row["caption"] for row in self.rows]
+            if index == "image_id":
+                return [
+                    row.get("image_filename", Path(row["image_path"]).name)
+                    for row in self.rows
+                ]
+            return [self[row_index][index] for row_index in range(len(self))]
+        row = self.rows[index]
+        image_path = Path(row["image_path"])
+        if not image_path.is_absolute():
+            image_path = PROJECT_ROOT / image_path
+        with Image.open(image_path) as image:
+            image = image.convert("RGB")
+        return {
+            "image": image,
+            "caption": row["caption"],
+            "image_id": row.get("image_filename", image_path.name),
+            "split": normalize_split(row["split"]),
+        }
+
+    def select(self, indices):
+        return LocalFlickrSplit(self.rows[index] for index in indices)
+
+
+def load_local_flickr30k(annotations_path=DEFAULT_LOCAL_ANNOTATIONS):
+    annotations_path = Path(annotations_path)
+    with annotations_path.open(encoding="utf-8", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+    grouped = {}
+    for row in rows:
+        grouped.setdefault(normalize_split(row["split"]), []).append(row)
+    return {
+        split: LocalFlickrSplit(split_rows)
+        for split, split_rows in grouped.items()
+    }
+
+
 def load_flickr30k(dataset_name=DEFAULT_DATASET, cache_dir=None):
+    local_annotations = (
+        Path(cache_dir) / "annotations.csv"
+        if cache_dir and Path(cache_dir).is_dir()
+        else DEFAULT_LOCAL_ANNOTATIONS
+    )
+    if local_annotations.is_file():
+        return load_local_flickr30k(local_annotations)
     from datasets import load_dataset
 
     return load_dataset(dataset_name, cache_dir=cache_dir)

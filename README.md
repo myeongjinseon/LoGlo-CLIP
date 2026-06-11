@@ -86,11 +86,14 @@ bash scripts/visualize_features.sh
 
 ## Results
 
-| Experiment | Main metric | Result |
-|---|---|---|
-| Flickr30k retrieval | I2T / T2I Recall@K | TBD |
-| Hard-negative retrieval | Top-1 accuracy / MRR | TBD |
-| Corruption robustness | Recall@K drop | TBD |
+## Results
+
+| Experiment              | Main metric                    | Result                                                                                               |
+| ----------------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| Flickr30k retrieval     | I2T / T2I Recall@1             | CLIP: 70.50 / 68.10 → LoGlo-CLIP: 74.90 / 75.00                                                      |
+| Hard-negative retrieval | Top-1 accuracy / MRR           | CLIP: 87.20 / 0.9293 → LoGlo-CLIP: 88.20 / 0.9344                                                    |
+| Corruption robustness   | I2T Recall@1 under corruptions | Higher absolute R@1 than CLIP in most corruptions; smaller R@1 drop on colour jitter and centre crop |
+
 
 Generated CSV files are stored under `results/`.
 
@@ -111,7 +114,7 @@ logs/          command output
 ```bibtex
 @article{logloclip2026,
   title   = {LoGlo-CLIP: Local-to-Global Layer Fusion for CLIP Image-Text Retrieval},
-  author  = {Anonymous},
+  author  = {Myeongjin Seon},
   journal = {Manuscript},
   year    = {2026}
 }

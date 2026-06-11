@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+source "${CONDA_SH:-/mnt/sdd/trans4/miniconda3/etc/profile.d/conda.sh}"
+conda activate "${CONDA_ENV:-loglo_clip}"
+
 device="3,4"
 dataset_name="nlphuji/flickr30k"
 dataset_cache=""
